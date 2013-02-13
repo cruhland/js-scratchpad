@@ -1,5 +1,9 @@
 // Put a solid black square of fixed size on the screen.
 
+function px(value) {
+    return value + 'px';
+}
+
 function createDiv() {
     var div = document.createElement('div');
 
@@ -11,20 +15,20 @@ function createDiv() {
         div.style.backgroundColor = value;
     }
 
-    function setWidth(value) {
-        div.style.width = value;
+    function setWidth(pixels) {
+        div.style.width = px(pixels);
     }
 
-    function setHeight(value) {
-        div.style.height = value;
+    function setHeight(pixels) {
+        div.style.height = px(pixels);
     }
 
-    function setLeft(value) {
-        div.style.left = value;
+    function setLeft(pixels) {
+        div.style.left = px(pixels);
     }
 
-    function setTop(value) {
-        div.style.top = value;
+    function setTop(pixels) {
+        div.style.top = px(pixels);
     }
 
     function draw() {
@@ -42,14 +46,22 @@ function createDiv() {
     };
 }
 
+var Position = {
+    'Absolute': 'absolute'
+};
+
+var Color = {
+    'Black': 'black'
+};
+
 function drawSquare() {
     var div = createDiv();
-    div.setPosition('absolute');
-    div.setBackgroundColor('black');
-    div.setWidth('100px');
-    div.setHeight('100px');
-    div.setLeft('250px');
-    div.setTop('250px');
+    div.setPosition(Position.Absolute);
+    div.setBackgroundColor(Color.Black);
+    div.setWidth(100);
+    div.setHeight(100);
+    div.setLeft(250);
+    div.setTop(250);
     div.draw();
 }
 
