@@ -52,13 +52,17 @@ var Scratchpad = (function() {
     };
 
     var Color = {
-        'Black': 'black'
+        'Black': 'black',
+        'Blue': 'blue',
+        'Green': 'green',
+        'Lime': 'lime',
+        'Red': 'red'
     };
 
-    function drawSquare(left, top) {
+    function drawSquare(left, top, color) {
         var div = createDiv();
         div.setPosition(Position.Absolute);
-        div.setBackgroundColor(Color.Black);
+        div.setBackgroundColor(color);
         div.setWidth(100);
         div.setHeight(100);
         div.setLeft(left);
@@ -67,6 +71,7 @@ var Scratchpad = (function() {
     }
 
     return {
+        'Color': Color,
         'drawSquare': drawSquare
     };
 })();
