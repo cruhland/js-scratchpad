@@ -55,14 +55,14 @@ var Scratchpad = (function() {
         'Black': 'black'
     };
 
-    function drawSquare() {
+    function drawSquare(left, top) {
         var div = createDiv();
         div.setPosition(Position.Absolute);
         div.setBackgroundColor(Color.Black);
         div.setWidth(100);
         div.setHeight(100);
-        div.setLeft(250);
-        div.setTop(250);
+        div.setLeft(left);
+        div.setTop(top);
         div.draw();
     }
 
