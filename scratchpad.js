@@ -65,6 +65,21 @@ var Scratchpad = (function() {
             div.addEventListener('mouseout', exitHandler, false);
         }
 
+        function onGrab(grab, release) {
+            var that = this;
+
+            function grabHandler() {
+                grab(that);
+            }
+
+            function releaseHandler() {
+                release(that);
+            }
+
+            div.addEventListener('mousedown', grabHandler, false);
+            div.addEventListener('mouseup', releaseHandler, false);
+        }
+
         function draw() {
             document.body.appendChild(div);
         }
@@ -80,6 +95,7 @@ var Scratchpad = (function() {
             'setTop': setTop,
             'onClick': onClick,
             'onHover': onHover,
+            'onGrab': onGrab,
             'draw': draw
         };
     }

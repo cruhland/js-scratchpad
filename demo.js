@@ -1,4 +1,4 @@
-// Set opacity on mouse hover
+// Set opacity on mouse grab
 var Color = Scratchpad.Color;
 var red = Scratchpad.makeRectangle(250, 250, Color.Red, 100, 100);
 var green = Scratchpad.makeRectangle(200, 100, Color.Lime, 300, 200);
@@ -24,9 +24,9 @@ function unfocus(rectangle) {
     rectangle.setOpacity(1.0);
 }
 
-red.onHover(focus, unfocus);
-green.onHover(focus, unfocus);
-blue.onHover(focus, unfocus);
+red.onGrab(focus, unfocus);
+green.onGrab(focus, unfocus);
+blue.onGrab(focus, unfocus);
 
 red.draw();
 green.draw();
