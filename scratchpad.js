@@ -8,8 +8,13 @@ var Scratchpad = (function() {
     function createDiv() {
         var div = document.createElement('div');
 
-        function setPosition(value) {
+        function setPositioning(value) {
             div.style.position = value;
+        }
+
+        function setPosition(leftPixels, topPixels) {
+            div.style.left = px(leftPixels);
+            div.style.top = px(topPixels);
         }
 
         function getBackgroundColor() {
@@ -30,14 +35,6 @@ var Scratchpad = (function() {
 
         function setHeight(pixels) {
             div.style.height = px(pixels);
-        }
-
-        function setLeft(pixels) {
-            div.style.left = px(pixels);
-        }
-
-        function setTop(pixels) {
-            div.style.top = px(pixels);
         }
 
         function onClick(callback) {
@@ -85,14 +82,13 @@ var Scratchpad = (function() {
         }
 
         return {
+            'setPositioning': setPositioning,
             'setPosition': setPosition,
             'getBackgroundColor': getBackgroundColor,
             'setBackgroundColor': setBackgroundColor,
             'setOpacity': setOpacity,
             'setWidth': setWidth,
             'setHeight': setHeight,
-            'setLeft': setLeft,
-            'setTop': setTop,
             'onClick': onClick,
             'onHover': onHover,
             'onGrab': onGrab,
@@ -100,7 +96,7 @@ var Scratchpad = (function() {
         };
     }
 
-    var Position = {
+    var Positioning = {
         'Absolute': 'absolute'
     };
 
@@ -112,14 +108,12 @@ var Scratchpad = (function() {
         'Red': 'red'
     };
 
-    function makeRectangle(left, top, color, width, height) {
+    function makeRectangle(color, width, height) {
         var div = createDiv();
-        div.setPosition(Position.Absolute);
+        div.setPositioning(Positioning.Absolute);
         div.setBackgroundColor(color);
         div.setWidth(width);
         div.setHeight(height);
-        div.setLeft(left);
-        div.setTop(top);
         return div;
     }
 

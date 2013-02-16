@@ -1,8 +1,8 @@
-// Set opacity on mouse grab
+// Set position independently of the rectangle constructor
 var Color = Scratchpad.Color;
-var red = Scratchpad.makeRectangle(250, 250, Color.Red, 100, 100);
-var green = Scratchpad.makeRectangle(200, 100, Color.Lime, 300, 200);
-var blue = Scratchpad.makeRectangle(450, 200, Color.Blue, 75, 400);
+var red = Scratchpad.makeRectangle(Color.Red, 100, 100);
+var green = Scratchpad.makeRectangle(Color.Lime, 300, 200);
+var blue = Scratchpad.makeRectangle(Color.Blue, 75, 400);
 
 var colors = [Color.Red, Color.Lime, Color.Blue];
 function cycleColor(rectangle) {
@@ -27,6 +27,10 @@ function unfocus(rectangle) {
 red.onGrab(focus, unfocus);
 green.onGrab(focus, unfocus);
 blue.onGrab(focus, unfocus);
+
+red.setPosition(250, 250);
+green.setPosition(200, 100);
+blue.setPosition(450, 200);
 
 red.draw();
 green.draw();
