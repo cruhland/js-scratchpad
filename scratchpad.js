@@ -16,6 +16,10 @@ var Scratchpad = (function() {
             div.style.backgroundColor = value;
         }
 
+        function setOpacity(value) {
+            div.style.opacity = value;
+        }
+
         function setWidth(pixels) {
             div.style.width = px(pixels);
         }
@@ -39,6 +43,7 @@ var Scratchpad = (function() {
         return {
             'setPosition': setPosition,
             'setBackgroundColor': setBackgroundColor,
+            'setOpacity': setOpacity,
             'setWidth': setWidth,
             'setHeight': setHeight,
             'setLeft': setLeft,
@@ -59,10 +64,11 @@ var Scratchpad = (function() {
         'Red': 'red'
     };
 
-    function drawSquare(left, top, color, width, height) {
+    function drawSquare(left, top, color, opacity, width, height) {
         var div = createDiv();
         div.setPosition(Position.Absolute);
         div.setBackgroundColor(color);
+        div.setOpacity(opacity);
         div.setWidth(width);
         div.setHeight(height);
         div.setLeft(left);
