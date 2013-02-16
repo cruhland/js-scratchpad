@@ -12,6 +12,10 @@ var Scratchpad = (function() {
             div.style.position = value;
         }
 
+        function getBackgroundColor() {
+            return div.style.backgroundColor;
+        }
+
         function setBackgroundColor(value) {
             div.style.backgroundColor = value;
         }
@@ -36,18 +40,30 @@ var Scratchpad = (function() {
             div.style.top = px(pixels);
         }
 
+        function onClick(callback) {
+            var that = this;
+
+            function clickHandler() {
+                callback(that);
+            }
+
+            div.addEventListener('click', clickHandler, false);
+        }
+
         function draw() {
             document.body.appendChild(div);
         }
 
         return {
             'setPosition': setPosition,
+            'getBackgroundColor': getBackgroundColor,
             'setBackgroundColor': setBackgroundColor,
             'setOpacity': setOpacity,
             'setWidth': setWidth,
             'setHeight': setHeight,
             'setLeft': setLeft,
             'setTop': setTop,
+            'onClick': onClick,
             'draw': draw
         };
     }
