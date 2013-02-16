@@ -50,6 +50,21 @@ var Scratchpad = (function() {
             div.addEventListener('click', clickHandler, false);
         }
 
+        function onHover(start, stop) {
+            var that = this;
+
+            function enterHandler() {
+                start(that);
+            }
+
+            function exitHandler() {
+                stop(that);
+            }
+
+            div.addEventListener('mouseover', enterHandler, false);
+            div.addEventListener('mouseout', exitHandler, false);
+        }
+
         function draw() {
             document.body.appendChild(div);
         }
@@ -64,6 +79,7 @@ var Scratchpad = (function() {
             'setLeft': setLeft,
             'setTop': setTop,
             'onClick': onClick,
+            'onHover': onHover,
             'draw': draw
         };
     }
@@ -80,11 +96,10 @@ var Scratchpad = (function() {
         'Red': 'red'
     };
 
-    function makeRectangle(left, top, color, opacity, width, height) {
+    function makeRectangle(left, top, color, width, height) {
         var div = createDiv();
         div.setPosition(Position.Absolute);
         div.setBackgroundColor(color);
-        div.setOpacity(opacity);
         div.setWidth(width);
         div.setHeight(height);
         div.setLeft(left);

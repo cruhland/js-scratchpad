@@ -1,9 +1,8 @@
-
+// Set opacity on mouse hover
 var Color = Scratchpad.Color;
-var red = Scratchpad.makeRectangle(250, 250, Color.Red, 1.0, 100, 100);
-var green =
-    Scratchpad.makeRectangle(200, 100, Color.Lime, 0.25, 300, 200);
-var blue = Scratchpad.makeRectangle(450, 200, Color.Blue, 0.75, 75, 400);
+var red = Scratchpad.makeRectangle(250, 250, Color.Red, 100, 100);
+var green = Scratchpad.makeRectangle(200, 100, Color.Lime, 300, 200);
+var blue = Scratchpad.makeRectangle(450, 200, Color.Blue, 75, 400);
 
 var colors = [Color.Red, Color.Lime, Color.Blue];
 function cycleColor(rectangle) {
@@ -16,6 +15,18 @@ function cycleColor(rectangle) {
 red.onClick(cycleColor);
 green.onClick(cycleColor);
 blue.onClick(cycleColor);
+
+function focus(rectangle) {
+    rectangle.setOpacity(0.75);
+}
+
+function unfocus(rectangle) {
+    rectangle.setOpacity(1.0);
+}
+
+red.onHover(focus, unfocus);
+green.onHover(focus, unfocus);
+blue.onHover(focus, unfocus);
 
 red.draw();
 green.draw();
