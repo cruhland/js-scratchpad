@@ -12,6 +12,14 @@ var Scratchpad = (function() {
             div.style.position = value;
         }
 
+        function getLeft() {
+            return div.offsetLeft;
+        }
+
+        function getTop() {
+            return div.offsetTop;
+        }
+
         function setPosition(leftPixels, topPixels) {
             div.style.left = px(leftPixels);
             div.style.top = px(topPixels);
@@ -87,12 +95,48 @@ var Scratchpad = (function() {
             div.addEventListener('mouseup', releaseHandler, false);
         }
 
+        function onDrag(grab, release) {
+            var that = this;
+
+            function grabHandler(grabEvent) {
+                grabEvent.preventDefault();
+
+                var leftOffset = grabEvent.clientX - that.getLeft();
+                var topOffset = grabEvent.clientY - that.getTop();
+
+                function dragHandler(dragEvent) {
+                    var left = dragEvent.clientX - leftOffset;
+                    var top = dragEvent.clientY - topOffset;
+                    that.setPosition(left, top);
+                }
+
+                var drag = 'mousemove';
+                var stop = 'mouseup';
+
+                function releaseHandler() {
+                    document.removeEventListener(drag, dragHandler, false);
+                    document.removeEventListener(stop, releaseHandler, false);
+
+                    release(that);
+                }
+
+                document.addEventListener(drag, dragHandler, false);
+                document.addEventListener(stop, releaseHandler, false);
+
+                grab(that);
+            }
+
+            div.addEventListener('mousedown', grabHandler, false);
+        }
+
         function draw() {
             document.body.appendChild(div);
         }
 
         return {
             'setPositioning': setPositioning,
+            'getLeft': getLeft,
+            'getTop': getTop,
             'setPosition': setPosition,
             'getBackgroundColor': getBackgroundColor,
             'setBackgroundColor': setBackgroundColor,
@@ -103,6 +147,7 @@ var Scratchpad = (function() {
             'onDoubleClick': onDoubleClick,
             'onHover': onHover,
             'onGrab': onGrab,
+            'onDrag': onDrag,
             'draw': draw
         };
     }

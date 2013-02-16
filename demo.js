@@ -1,4 +1,4 @@
-// Cycle color on double click
+// Dragged rectangle should follow mouse
 var Color = Scratchpad.Color;
 var red = Scratchpad.makeRectangle(Color.Red, 100, 100);
 var green = Scratchpad.makeRectangle(Color.Lime, 300, 200);
@@ -16,17 +16,17 @@ red.onDoubleClick(cycleColor);
 green.onDoubleClick(cycleColor);
 blue.onDoubleClick(cycleColor);
 
-function focus(rectangle) {
+function grab(rectangle) {
     rectangle.setOpacity(0.75);
 }
 
-function unfocus(rectangle) {
+function release(rectangle) {
     rectangle.setOpacity(1.0);
 }
 
-red.onGrab(focus, unfocus);
-green.onGrab(focus, unfocus);
-blue.onGrab(focus, unfocus);
+red.onDrag(grab, release);
+green.onDrag(grab, release);
+blue.onDrag(grab, release);
 
 red.setPosition(250, 250);
 green.setPosition(200, 100);
