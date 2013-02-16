@@ -47,6 +47,16 @@ var Scratchpad = (function() {
             div.addEventListener('click', clickHandler, false);
         }
 
+        function onDoubleClick(callback) {
+            var that = this;
+
+            function doubleClickHandler() {
+                callback(that);
+            }
+
+            div.addEventListener('dblclick', doubleClickHandler, false);
+        }
+
         function onHover(start, stop) {
             var that = this;
 
@@ -90,6 +100,7 @@ var Scratchpad = (function() {
             'setWidth': setWidth,
             'setHeight': setHeight,
             'onClick': onClick,
+            'onDoubleClick': onDoubleClick,
             'onHover': onHover,
             'onGrab': onGrab,
             'draw': draw

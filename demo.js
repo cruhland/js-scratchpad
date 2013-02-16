@@ -1,4 +1,4 @@
-// Set position independently of the rectangle constructor
+// Cycle color on double click
 var Color = Scratchpad.Color;
 var red = Scratchpad.makeRectangle(Color.Red, 100, 100);
 var green = Scratchpad.makeRectangle(Color.Lime, 300, 200);
@@ -12,9 +12,9 @@ function cycleColor(rectangle) {
     rectangle.setBackgroundColor(newColor);
 }
 
-red.onClick(cycleColor);
-green.onClick(cycleColor);
-blue.onClick(cycleColor);
+red.onDoubleClick(cycleColor);
+green.onDoubleClick(cycleColor);
+blue.onDoubleClick(cycleColor);
 
 function focus(rectangle) {
     rectangle.setOpacity(0.75);
