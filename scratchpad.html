@@ -7,10 +7,16 @@
   <body>
     <script src="scratchpad.js"></script>
     <script>
-      // Draw rectangles with varying opacity
-      Scratchpad.drawRectangle(250, 250, Scratchpad.Color.Red, 1.0, 100, 100);
-      Scratchpad.drawRectangle(200, 100, Scratchpad.Color.Lime, 0.25, 300, 200);
-      Scratchpad.drawRectangle(450, 200, Scratchpad.Color.Blue, 0.75, 75, 400);
+      // Separate drawing from rectangle creation
+      var Color = Scratchpad.Color;
+      var red = Scratchpad.makeRectangle(250, 250, Color.Red, 1.0, 100, 100);
+      var green =
+          Scratchpad.makeRectangle(200, 100, Color.Lime, 0.25, 300, 200);
+      var blue = Scratchpad.makeRectangle(450, 200, Color.Blue, 0.75, 75, 400);
+
+      red.draw();
+      green.draw();
+      blue.draw();
     </script>
   </body>
 </html>

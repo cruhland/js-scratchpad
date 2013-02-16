@@ -64,7 +64,7 @@ var Scratchpad = (function() {
         'Red': 'red'
     };
 
-    function drawRectangle(left, top, color, opacity, width, height) {
+    function makeRectangle(left, top, color, opacity, width, height) {
         var div = createDiv();
         div.setPosition(Position.Absolute);
         div.setBackgroundColor(color);
@@ -73,11 +73,11 @@ var Scratchpad = (function() {
         div.setHeight(height);
         div.setLeft(left);
         div.setTop(top);
-        div.draw();
+        return div;
     }
 
     return {
         'Color': Color,
-        'drawRectangle': drawRectangle
+        'makeRectangle': makeRectangle
     };
 })();
