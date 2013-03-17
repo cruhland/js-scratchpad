@@ -102,7 +102,7 @@ var Scratchpad = (function() {
             element.addEventListener('mouseup', releaseHandler, false);
         }
 
-        function onDrag(grab, release) {
+        function onDrag(grab, move, release) {
             var that = this;
 
             function grabHandler(grabEvent) {
@@ -115,6 +115,8 @@ var Scratchpad = (function() {
                     var left = dragEvent.clientX - leftOffset;
                     var top = dragEvent.clientY - topOffset;
                     that.setPosition(left, top);
+
+                    move(that);
                 }
 
                 var drag = 'mousemove';
