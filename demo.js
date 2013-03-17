@@ -1,4 +1,4 @@
-// Dragged rectangle should follow mouse
+// Mouse position should be displayed
 var Color = Scratchpad.Color;
 var red = Scratchpad.makeRectangle(Color.Red, 100, 100);
 var green = Scratchpad.makeRectangle(Color.Lime, 300, 200);
@@ -35,3 +35,23 @@ blue.setPosition(450, 200);
 red.draw();
 green.draw();
 blue.draw();
+
+var displayMouseX = Scratchpad.makeText();
+var displayMouseY = Scratchpad.makeText();
+
+displayMouseX.setPosition(10, 10);
+displayMouseY.setPosition(10, 30);
+
+function mouseUpdateX(x) {
+    displayMouseX.setText(x);
+}
+
+function mouseUpdateY(y) {
+    displayMouseY.setText(y);
+}
+
+Scratchpad.Mouse.onUpdateX(mouseUpdateX);
+Scratchpad.Mouse.onUpdateY(mouseUpdateY);
+
+displayMouseX.draw();
+displayMouseY.draw();

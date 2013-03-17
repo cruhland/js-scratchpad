@@ -45,6 +45,10 @@ var Scratchpad = (function() {
             div.style.height = px(pixels);
         }
 
+        function setText(text) {
+            div.innerHTML = text;
+        }
+
         function onClick(callback) {
             var that = this;
 
@@ -143,6 +147,7 @@ var Scratchpad = (function() {
             'setOpacity': setOpacity,
             'setWidth': setWidth,
             'setHeight': setHeight,
+            'setText': setText,
             'onClick': onClick,
             'onDoubleClick': onDoubleClick,
             'onHover': onHover,
@@ -164,6 +169,30 @@ var Scratchpad = (function() {
         'Red': 'red'
     };
 
+    var Mouse = (function() {
+
+        function onUpdateX(action) {
+            function actionWrapper(evt) {
+                action(evt.clientX);
+            }
+
+            document.addEventListener('mousemove', actionWrapper, false);
+        }
+
+        function onUpdateY(action) {
+            function actionWrapper(evt) {
+                action(evt.clientY);
+            }
+
+            document.addEventListener('mousemove', actionWrapper, false);
+        }
+
+        return {
+            'onUpdateX': onUpdateX,
+            'onUpdateY': onUpdateY
+        };
+    })();
+
     function makeRectangle(color, width, height) {
         var div = createDiv();
         div.setPositioning(Positioning.Absolute);
@@ -173,8 +202,16 @@ var Scratchpad = (function() {
         return div;
     }
 
+    function makeText() {
+        var div = createDiv();
+        div.setPositioning(Positioning.Absolute);
+        return div;
+    }
+
     return {
         'Color': Color,
-        'makeRectangle': makeRectangle
+        'Mouse': Mouse,
+        'makeRectangle': makeRectangle,
+        'makeText': makeText
     };
 })();
