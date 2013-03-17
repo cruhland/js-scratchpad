@@ -1,5 +1,7 @@
 
 var Scratchpad = (function() {
+    var focused = null;
+    var newObjectFocused = false;
 
     function px(value) {
         return value + 'px';
@@ -9,7 +11,22 @@ var Scratchpad = (function() {
         return wrapElement(document.createElement('div'));
     }
 
+    function makeChangeFocus(element) {
+        function changeFocus() {
+            if (!(focused !== null && element === null && newObjectFocused)) {
+                if (focused !== null) focused.unfocus();
+                focused = element;
+            }
+            newObjectFocused = (element !== null);
+            if (newObjectFocused) focused.focus();
+        }
+
+        return changeFocus;
+    }
+
     function wrapElement(element) {
+        var focusAction = null;
+        var unfocusAction = null;
 
         function setPositioning(value) {
             element.style.position = value;
@@ -60,6 +77,18 @@ var Scratchpad = (function() {
             }
 
             element.addEventListener('click', clickHandler, false);
+        }
+
+        function setBorder(border) {
+            element.style.border = border;
+        }
+
+        function setBackgroundClip(backgroundClip) {
+            element.style.backgroundClip = backgroundClip;
+        }
+
+        function setPadding(pixels) {
+            element.style.padding = px(pixels);
         }
 
         function onDoubleClick(callback) {
@@ -138,11 +167,27 @@ var Scratchpad = (function() {
             element.addEventListener('mousedown', grabHandler, false);
         }
 
+        function focus() {
+            if (focusAction !== null) focusAction(this);
+        }
+
+        function unfocus() {
+            if (unfocusAction !== null) unfocusAction(this);
+        }
+
+        function onFocus(action) {
+            focusAction = action;
+        }
+
+        function onUnfocus(action) {
+            unfocusAction = action;
+        }
+
         function draw() {
             document.body.appendChild(element);
         }
 
-        return {
+        var wrapper = {
             'setPositioning': setPositioning,
             'getLeft': getLeft,
             'getTop': getTop,
@@ -153,13 +198,24 @@ var Scratchpad = (function() {
             'setWidth': setWidth,
             'setHeight': setHeight,
             'setText': setText,
+            'setBorder': setBorder,
+            'setBackgroundClip': setBackgroundClip,
+            'setPadding': setPadding,
             'onClick': onClick,
             'onDoubleClick': onDoubleClick,
             'onHover': onHover,
             'onGrab': onGrab,
             'onDrag': onDrag,
-            'draw': draw
+            'onFocus': onFocus,
+            'onUnfocus': onUnfocus,
+            'draw': draw,
+            'focus': focus,
+            'unfocus': unfocus
         };
+
+        element.addEventListener('mousedown', makeChangeFocus(wrapper), false);
+
+        return wrapper;
     }
 
     var Positioning = {
@@ -204,6 +260,9 @@ var Scratchpad = (function() {
         div.setBackgroundColor(color);
         div.setWidth(width);
         div.setHeight(height);
+        div.setBackgroundClip('content-box');
+        div.setPadding(1);
+        div.setBorder('1px solid transparent');
         return div;
     }
 
@@ -217,6 +276,8 @@ var Scratchpad = (function() {
         var element = document.getElementById(id);
         return element === null ? element : wrapElement(element);
     }
+
+    document.addEventListener('mousedown', makeChangeFocus(null), false);
 
     return {
         'Color': Color,

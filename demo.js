@@ -44,6 +44,30 @@ red.onDrag(grab, makeMove(redX, redY), release);
 green.onDrag(grab, makeMove(greenX, greenY), release);
 blue.onDrag(grab, makeMove(blueX, blueY), release);
 
+var displayFocus = Scratchpad.findById('focused');
+
+function makeFocus(name) {
+    function focus(rectangle) {
+        rectangle.setBorder('1px dotted black');
+        displayFocus.setText(name);
+    }
+
+    return focus;
+}
+
+function unfocus(rectangle) {
+    rectangle.setBorder('1px solid transparent');
+    displayFocus.setText('(none)');
+}
+
+red.onFocus(makeFocus('red'));
+green.onFocus(makeFocus('green'));
+blue.onFocus(makeFocus('blue'));
+
+red.onUnfocus(unfocus);
+green.onUnfocus(unfocus);
+blue.onUnfocus(unfocus);
+
 red.setPosition(250, 250);
 green.setPosition(200, 100);
 blue.setPosition(450, 200);
