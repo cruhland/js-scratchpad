@@ -6,47 +6,50 @@ var Scratchpad = (function() {
     }
 
     function createDiv() {
-        var div = document.createElement('div');
+        return wrapElement(document.createElement('div'));
+    }
+
+    function wrapElement(element) {
 
         function setPositioning(value) {
-            div.style.position = value;
+            element.style.position = value;
         }
 
         function getLeft() {
-            return div.offsetLeft;
+            return element.offsetLeft;
         }
 
         function getTop() {
-            return div.offsetTop;
+            return element.offsetTop;
         }
 
         function setPosition(leftPixels, topPixels) {
-            div.style.left = px(leftPixels);
-            div.style.top = px(topPixels);
+            element.style.left = px(leftPixels);
+            element.style.top = px(topPixels);
         }
 
         function getBackgroundColor() {
-            return div.style.backgroundColor;
+            return element.style.backgroundColor;
         }
 
         function setBackgroundColor(value) {
-            div.style.backgroundColor = value;
+            element.style.backgroundColor = value;
         }
 
         function setOpacity(value) {
-            div.style.opacity = value;
+            element.style.opacity = value;
         }
 
         function setWidth(pixels) {
-            div.style.width = px(pixels);
+            element.style.width = px(pixels);
         }
 
         function setHeight(pixels) {
-            div.style.height = px(pixels);
+            element.style.height = px(pixels);
         }
 
         function setText(text) {
-            div.innerHTML = text;
+            element.innerHTML = text;
         }
 
         function onClick(callback) {
@@ -56,7 +59,7 @@ var Scratchpad = (function() {
                 callback(that);
             }
 
-            div.addEventListener('click', clickHandler, false);
+            element.addEventListener('click', clickHandler, false);
         }
 
         function onDoubleClick(callback) {
@@ -66,7 +69,7 @@ var Scratchpad = (function() {
                 callback(that);
             }
 
-            div.addEventListener('dblclick', doubleClickHandler, false);
+            element.addEventListener('dblclick', doubleClickHandler, false);
         }
 
         function onHover(start, stop) {
@@ -80,8 +83,8 @@ var Scratchpad = (function() {
                 stop(that);
             }
 
-            div.addEventListener('mouseover', enterHandler, false);
-            div.addEventListener('mouseout', exitHandler, false);
+            element.addEventListener('mouseover', enterHandler, false);
+            element.addEventListener('mouseout', exitHandler, false);
         }
 
         function onGrab(grab, release) {
@@ -95,8 +98,8 @@ var Scratchpad = (function() {
                 release(that);
             }
 
-            div.addEventListener('mousedown', grabHandler, false);
-            div.addEventListener('mouseup', releaseHandler, false);
+            element.addEventListener('mousedown', grabHandler, false);
+            element.addEventListener('mouseup', releaseHandler, false);
         }
 
         function onDrag(grab, release) {
@@ -130,11 +133,11 @@ var Scratchpad = (function() {
                 grab(that);
             }
 
-            div.addEventListener('mousedown', grabHandler, false);
+            element.addEventListener('mousedown', grabHandler, false);
         }
 
         function draw() {
-            document.body.appendChild(div);
+            document.body.appendChild(element);
         }
 
         return {
@@ -208,10 +211,16 @@ var Scratchpad = (function() {
         return div;
     }
 
+    function findById(id) {
+        var element = document.getElementById(id);
+        return element === null ? element : wrapElement(element);
+    }
+
     return {
         'Color': Color,
         'Mouse': Mouse,
         'makeRectangle': makeRectangle,
-        'makeText': makeText
+        'makeText': makeText,
+        'findById': findById
     };
 })();
