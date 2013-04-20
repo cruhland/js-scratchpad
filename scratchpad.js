@@ -1,7 +1,6 @@
 
 var Scratchpad = (function() {
     var focused = null;
-    var newObjectFocused = false;
 
     function px(value) {
         return value + 'px';
@@ -12,13 +11,15 @@ var Scratchpad = (function() {
     }
 
     function makeChangeFocus(element) {
-        function changeFocus() {
-            if (!(focused !== null && element === null && newObjectFocused)) {
-                if (focused !== null) focused.unfocus();
-                focused = element;
+        function changeFocus(evt) {
+            evt.stopPropagation();
+            if (focused !== null) {
+                focused.unfocus();
             }
-            newObjectFocused = (element !== null);
-            if (newObjectFocused) focused.focus();
+            focused = element;
+            if (focused) {
+                focused.focus();
+            }
         }
 
         return changeFocus;
