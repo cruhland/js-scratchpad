@@ -16,21 +16,36 @@ red.onDoubleClick(cycleColor);
 green.onDoubleClick(cycleColor);
 blue.onDoubleClick(cycleColor);
 
-var redX = Scratchpad.findById('redX');
-var redY = Scratchpad.findById('redY');
-var greenX = Scratchpad.findById('greenX');
-var greenY = Scratchpad.findById('greenY');
-var blueX = Scratchpad.findById('blueX');
-var blueY = Scratchpad.findById('blueY');
+var table = Scratchpad.makeTable('Entity', 'X', 'Y');
+var mouseRow = table.makeRow();
+mouseRow.setColumn('Entity', 'Mouse');
+
+function mouseUpdateX(x) {
+    mouseRow.setColumn('X', x);
+}
+
+function mouseUpdateY(y) {
+    mouseRow.setColumn('Y', y);
+}
+
+Scratchpad.Mouse.onUpdateX(mouseUpdateX);
+Scratchpad.Mouse.onUpdateY(mouseUpdateY);
+
+var redRow = table.makeRow();
+var greenRow = table.makeRow();
+var blueRow = table.makeRow();
+redRow.setColumn('Entity', 'Red');
+greenRow.setColumn('Entity', 'Green');
+blueRow.setColumn('Entity', 'Blue');
 
 function grab(rectangle) {
     rectangle.setOpacity(0.75);
 }
 
-function makeMove(displayX, displayY) {
+function makeMove(tableRow) {
     function move(rectangle) {
-        displayX.setText(rectangle.getLeft());
-        displayY.setText(rectangle.getTop());
+        tableRow.setColumn('X', rectangle.getLeft());
+        tableRow.setColumn('Y', rectangle.getTop());
     }
 
     return move;
@@ -40,11 +55,11 @@ function release(rectangle) {
     rectangle.setOpacity(1.0);
 }
 
-red.onDrag(grab, makeMove(redX, redY), release);
-green.onDrag(grab, makeMove(greenX, greenY), release);
-blue.onDrag(grab, makeMove(blueX, blueY), release);
+red.onDrag(grab, makeMove(redRow), release);
+green.onDrag(grab, makeMove(greenRow), release);
+blue.onDrag(grab, makeMove(blueRow), release);
 
-var displayFocus = Scratchpad.findById('focused');
+var displayFocus = Scratchpad.makeText('(none)');
 
 function makeFocus(name) {
     function focus(rectangle) {
@@ -76,16 +91,10 @@ red.draw();
 green.draw();
 blue.draw();
 
-var displayMouseX = Scratchpad.findById('mouseX');
-var displayMouseY = Scratchpad.findById('mouseY');
+var info = Scratchpad.makeContainer();
+info.setPosition(5, 5);
+info.addChild(table);
+info.addChild(Scratchpad.makeText('Focused:\u00a0'));
+info.addChild(displayFocus);
 
-function mouseUpdateX(x) {
-    displayMouseX.setText(x);
-}
-
-function mouseUpdateY(y) {
-    displayMouseY.setText(y);
-}
-
-Scratchpad.Mouse.onUpdateX(mouseUpdateX);
-Scratchpad.Mouse.onUpdateY(mouseUpdateY);
+info.draw();

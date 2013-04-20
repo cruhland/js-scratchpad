@@ -10,6 +10,51 @@ var Scratchpad = (function() {
         return wrapElement(document.createElement('div'));
     }
 
+    function createTable() {
+        var table = document.createElement('table');
+        var thead = document.createElement('thead');
+        var tbody = document.createElement('tbody');
+        table.appendChild(thead);
+        table.appendChild(tbody);
+
+        var headRow = document.createElement('tr');
+        thead.appendChild(headRow);
+
+        var columnNames = [];
+
+        function addColumn(name) {
+            var td = document.createElement('td');
+            td.textContent = name;
+            headRow.appendChild(td);
+            columnNames.push(name);
+        }
+
+        function makeRow() {
+            var bodyRow = document.createElement('tr');
+            var row = {};
+            for (var i = 0; i < columnNames.length; i++) {
+                var cell = document.createElement('td');
+                bodyRow.appendChild(cell);
+                row[columnNames[i]] = cell;
+            }
+            tbody.appendChild(bodyRow);
+
+            function setColumn(columnName, value) {
+                row[columnName].textContent = value;
+            }
+
+            return {
+                'setColumn': setColumn
+            };
+        }
+
+        return {
+            'addColumn': addColumn,
+            'element': table,
+            'makeRow': makeRow
+        };
+    }
+
     function makeChangeFocus(element) {
         function changeFocus(evt) {
             evt.stopPropagation();
@@ -188,6 +233,10 @@ var Scratchpad = (function() {
             document.body.appendChild(element);
         }
 
+        function addChild(child) {
+            element.appendChild(child.element);
+        }
+
         var wrapper = {
             'setPositioning': setPositioning,
             'getLeft': getLeft,
@@ -211,7 +260,9 @@ var Scratchpad = (function() {
             'onUnfocus': onUnfocus,
             'draw': draw,
             'focus': focus,
-            'unfocus': unfocus
+            'unfocus': unfocus,
+            'addChild': addChild,
+            'element': element
         };
 
         element.addEventListener('mousedown', makeChangeFocus(wrapper), false);
@@ -255,6 +306,12 @@ var Scratchpad = (function() {
         };
     })();
 
+    function makeContainer() {
+        var div = createDiv();
+        div.setPositioning(Positioning.Absolute);
+        return div;
+    }
+
     function makeRectangle(color, width, height) {
         var div = createDiv();
         div.setPositioning(Positioning.Absolute);
@@ -267,10 +324,25 @@ var Scratchpad = (function() {
         return div;
     }
 
-    function makeText() {
-        var div = createDiv();
-        div.setPositioning(Positioning.Absolute);
-        return div;
+    function makeTable() {
+        var table = createTable();
+        for (var i = 0; i < arguments.length; i++) {
+            table.addColumn(arguments[i]);
+        }
+        return table;
+    }
+
+    function makeText(initialText) {
+        var element = document.createTextNode(initialText);
+
+        function setText(text) {
+            element.textContent = text;
+        }
+
+        return {
+            'setText': setText,
+            'element': element
+        };
     }
 
     function findById(id) {
@@ -283,7 +355,9 @@ var Scratchpad = (function() {
     return {
         'Color': Color,
         'Mouse': Mouse,
+        'makeContainer': makeContainer,
         'makeRectangle': makeRectangle,
+        'makeTable': makeTable,
         'makeText': makeText,
         'findById': findById
     };
