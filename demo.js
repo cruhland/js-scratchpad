@@ -1,4 +1,4 @@
-// Mouse position and rectangle positions should be displayed
+// Allow new rectangles to be created by clicking and dragging
 var Color = Scratchpad.Color;
 var red = Scratchpad.makeRectangle(Color.Red, 100, 100);
 var green = Scratchpad.makeRectangle(Color.Lime, 300, 200);
@@ -38,26 +38,34 @@ redRow.setColumn('Entity', 'Red');
 greenRow.setColumn('Entity', 'Green');
 blueRow.setColumn('Entity', 'Blue');
 
-function grab(rectangle) {
-    rectangle.setOpacity(0.75);
-}
+function setupDragging(rectangle, tableRow) {
 
-function makeMove(tableRow) {
-    function move(rectangle) {
+    var leftOffset = null;
+    var topOffset = null;
+
+    function grab(x, y) {
+        rectangle.setOpacity(0.75);
+        leftOffset = x - rectangle.getLeft();
+        topOffset = y - rectangle.getTop();
+    }
+
+    function move(x, y) {
+        rectangle.setPosition(x - leftOffset, y - topOffset);
         tableRow.setColumn('X', rectangle.getLeft());
         tableRow.setColumn('Y', rectangle.getTop());
     }
 
-    return move;
+    function release(x, y) {
+        rectangle.setPosition(x - leftOffset, y - topOffset);
+        rectangle.setOpacity(1.0);
+    }
+
+    rectangle.onDrag(grab, move, release);
 }
 
-function release(rectangle) {
-    rectangle.setOpacity(1.0);
-}
-
-red.onDrag(grab, makeMove(redRow), release);
-green.onDrag(grab, makeMove(greenRow), release);
-blue.onDrag(grab, makeMove(blueRow), release);
+setupDragging(red, redRow);
+setupDragging(green, greenRow);
+setupDragging(blue, blueRow);
 
 var displayFocus = Scratchpad.makeText('(none)');
 
@@ -98,3 +106,32 @@ info.addChild(Scratchpad.makeText('Focused:\u00a0'));
 info.addChild(displayFocus);
 
 info.draw();
+
+var newRectangleX = null;
+var newRectangleY = null;
+var newRectangle = null;
+
+function dragStart(x, y) {
+    newRectangleX = x;
+    newRectangleY = y;
+}
+
+function dragMove(x, y) {
+    if (newRectangle === null) {
+        newRectangle = Scratchpad.makeRectangle(Color.Black, 0, 0);
+        newRectangle.setPosition(newRectangleX, newRectangleY);
+        newRectangle.draw();
+    }
+    newRectangle.setWidth(x - newRectangleX);
+    newRectangle.setHeight(y - newRectangleY);
+}
+
+function dragStop(x, y) {
+    if (newRectangle !== null) {
+        newRectangle.setWidth(x - newRectangleX);
+        newRectangle.setHeight(y - newRectangleY);
+        newRectangle = null;
+    }
+}
+
+Scratchpad.Document.onDrag(dragStart, dragMove, dragStop);

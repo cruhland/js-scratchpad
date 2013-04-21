@@ -70,6 +70,39 @@ var Scratchpad = (function() {
         return changeFocus;
     }
 
+    function makeOnDrag(element) {
+
+        function onDrag(start, move, stop) {
+
+            function grabHandler(evt) {
+                evt.preventDefault();
+
+                function dragHandler(evt) {
+                    move(evt.clientX, evt.clientY);
+                }
+
+                var drag = 'mousemove';
+                var done = 'mouseup';
+
+                function releaseHandler(evt) {
+                    document.removeEventListener(drag, dragHandler, false);
+                    document.removeEventListener(done, releaseHandler, false);
+
+                    stop(evt.clientX, evt.clientY);
+                }
+
+                document.addEventListener(drag, dragHandler, false);
+                document.addEventListener(done, releaseHandler, false);
+
+                start(evt.clientX, evt.clientY);
+            }
+
+            element.addEventListener('mousedown', grabHandler, false);
+        }
+
+        return onDrag;
+    }
+
     function wrapElement(element) {
         var focusAction = null;
         var unfocusAction = null;
@@ -177,42 +210,6 @@ var Scratchpad = (function() {
             element.addEventListener('mouseup', releaseHandler, false);
         }
 
-        function onDrag(grab, move, release) {
-            var that = this;
-
-            function grabHandler(grabEvent) {
-                grabEvent.preventDefault();
-
-                var leftOffset = grabEvent.clientX - that.getLeft();
-                var topOffset = grabEvent.clientY - that.getTop();
-
-                function dragHandler(dragEvent) {
-                    var left = dragEvent.clientX - leftOffset;
-                    var top = dragEvent.clientY - topOffset;
-                    that.setPosition(left, top);
-
-                    move(that);
-                }
-
-                var drag = 'mousemove';
-                var stop = 'mouseup';
-
-                function releaseHandler() {
-                    document.removeEventListener(drag, dragHandler, false);
-                    document.removeEventListener(stop, releaseHandler, false);
-
-                    release(that);
-                }
-
-                document.addEventListener(drag, dragHandler, false);
-                document.addEventListener(stop, releaseHandler, false);
-
-                grab(that);
-            }
-
-            element.addEventListener('mousedown', grabHandler, false);
-        }
-
         function focus() {
             if (focusAction !== null) focusAction(this);
         }
@@ -255,7 +252,7 @@ var Scratchpad = (function() {
             'onDoubleClick': onDoubleClick,
             'onHover': onHover,
             'onGrab': onGrab,
-            'onDrag': onDrag,
+            'onDrag': makeOnDrag(element),
             'onFocus': onFocus,
             'onUnfocus': onUnfocus,
             'draw': draw,
@@ -352,8 +349,13 @@ var Scratchpad = (function() {
 
     document.addEventListener('mousedown', makeChangeFocus(null), false);
 
+    var Document = {
+        'onDrag': makeOnDrag(document)
+    };
+
     return {
         'Color': Color,
+        'Document': Document,
         'Mouse': Mouse,
         'makeContainer': makeContainer,
         'makeRectangle': makeRectangle,
